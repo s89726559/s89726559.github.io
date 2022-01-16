@@ -1,0 +1,463 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style>
+        body{
+            background-repeat:no-repeat;
+            background-size:100% 100%;
+            background-attachment:fixed;
+        }
+        div.event {
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
+        img.event{
+            max-width:40%;
+            max-height:40%;
+        }
+        div.description {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        p.descriptionText {
+            width: 50%;
+            height: 325px;
+            padding-top: 60px;
+            padding-left: 40px;
+            padding-right: 40px;
+            font-size: x-large;
+            background-image: url("./image/f1.png");
+            background-size: 100% 100%;
+        }
+        div.choicediv {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        button.choice {
+            font-size:x-large;
+            margin-left:50px;
+            margin-right:50px;
+            padding:10px;
+        }
+        div.restart {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        button.restart {
+            bottom:0px;
+            font-size: x-large;
+            margin-top:20px;
+        }
+    </style>
+    <script>
+        //如果沒有先前的本地端儲存紀錄就從頭開始
+        function start() {
+            let stage = localStorage.getItem("stage");
+            console.log(localStorage.getItem("stage"));
+            if (localStorage.getItem("stage") == null) {
+                localStorage.setItem("stage", 1);
+            }
+            console.log(localStorage.getItem("stage"));
+            checkStage();
+        }
+
+        //確認關卡，並設定可用的選項。
+        function checkStage() {
+            let stage = localStorage.getItem("stage");
+            let previousChoice = localStorage.getItem("choice");
+            console.log("stage=" + stage);
+            console.log("previousChoice=" + previousChoice);
+            let backgroundImage = document.getElementById("backgroundImage");
+            let eventDiv = document.getElementById("eventDiv");
+            let descriptionDiv = document.getElementById("descriptionDiv");
+            let choiceDiv = document.getElementById("choiceDiv");
+
+            if (stage == 1) {
+                let bg = './image/b1.png';
+                let ev = './image/nothing.png';
+                let des = '眼睛睜開，出現在眼前的是不同以往的風景這裡是...';
+                let choice = '<button class="choice" onclick="setStageChoice(2,1)">難道是異世界!!</button>';
+                choice += '<button class="choice" onclick="setStageChoice(2,2)">是...是哪啊？</button>';
+                backgroundImage.style.backgroundImage = 'url("'+bg+'")';
+                eventDiv.innerHTML = '<img id="eventImage" class="event" src="'+ev+'">';
+                descriptionDiv.innerHTML = '<p id="descriptionText" class="descriptionText">'+des+'</p>';
+                choiceDiv.innerHTML = choice;
+
+            }
+
+            if (stage==2) {
+                let bg = './image/b1.png';
+                let ev = './image/nothing.png';
+                let des = '';
+                let choice = '';
+                if (previousChoice==1) {
+                    des = '記憶朦朧醒在陌生的地方，這裡肯定是異世界!';
+                }
+                if (previousChoice == 2) {
+                    des = '對這裡完全沒印象...昨天的事也想不起來...感覺很不妙...';
+                }
+                choice = '<button class="choice" onclick="setStageChoice(3,0)">無論如何還是先前進再說</button>';
+                
+                backgroundImage.style.backgroundImage = 'url("' + bg + '")';
+                eventDiv.innerHTML = '<img id="eventImage" class="event" src="' + ev + '">';
+                descriptionDiv.innerHTML = '<p id="descriptionText" class="descriptionText">' + des + '</p>';
+                choiceDiv.innerHTML = choice;
+            }
+
+            if (stage == 3) {
+                let bg = './image/b1.png';
+                let ev = './image/e1.png';
+                let des = '走了一段時間後突然出現一隻吉娃娃向你跑來...沒想到牠居然開口說話了！<br />吉娃娃：「我是醜狗阿吉，叫我阿吉就好，我現在正被FBX追捕，你能幫幫我嗎？」';
+                if (previousChoice == 1) {
+                    des = '阿吉:「你居然不知道，FBX 就是 Federal Bureau of X-creatures 阿!」';
+                }
+                if (previousChoice == 2) {
+                    des = '阿吉:「FBX那群傢伙覺得我是外星狗，想把我抓去做研究，天知道他們會不會解剖我，拜託你幫幫我吧!」';
+                }
+
+                let choice = '';
+                choice = '<button class="choice" onclick="setStageChoice(3,1)">FBX是啥？</button>';
+                choice += '<button class="choice" onclick="setStageChoice(3,2)">為什麼FBX要追捕你？</button>';
+                choice += '<button class="choice" onclick="setStageChoice(4,3)">為他提供保護</button>';
+                choice += '<button class="choice" onclick="setStageChoice(5,4)">拒絕保護他</button>';
+                backgroundImage.style.backgroundImage = 'url("' + bg + '")';
+                eventDiv.innerHTML = '<img id="eventImage" class="event" src="' + ev + '">';
+                descriptionDiv.innerHTML = '<p id="descriptionText" class="descriptionText">' + des + '</p>';
+                choiceDiv.innerHTML = choice;
+            }
+
+            if (stage == 4) {
+                let bg = './image/b1.png';
+                let ev = './image/e2.png';
+                let des = '你從阿吉身上感受到一種熟悉的親近感，決定帶著他一起旅行。<br />阿吉看起來很高興，不知從哪拿出一顆球給你並躲了進去。<br />夥伴阿吉加入了。';
+                localStorage.setItem("dog",1);
+                let choice = '';
+                choice = '<button class="choice" onclick="setStageChoice(6,1)">接著繼續前進吧!</button>';
+                backgroundImage.style.backgroundImage = 'url("' + bg + '")';
+                eventDiv.innerHTML = '<img id="eventImage" class="event" src="' + ev + '">';
+                descriptionDiv.innerHTML = '<p id="descriptionText" class="descriptionText">' + des + '</p>';
+                choiceDiv.innerHTML = choice;
+            }
+
+            if (stage == 5) {
+                let bg = './image/b1.png';
+                let ev = './image/e3.png';
+                let des = '你對吉娃娃有種厭惡感，就好像他真的是邪惡外星生物一樣，拒絕保護他。<br />阿吉看起來很失望的待在原地。';
+                localStorage.setItem("dog", 2);
+                let choice = '';
+                choice = '<button class="choice" onclick="setStageChoice(6,1)">接著繼續前進吧!</button>';
+                backgroundImage.style.backgroundImage = 'url("' + bg + '")';
+                eventDiv.innerHTML = '<img id="eventImage" class="event" src="' + ev + '">';
+                descriptionDiv.innerHTML = '<p id="descriptionText" class="descriptionText">' + des + '</p>';
+                choiceDiv.innerHTML = choice;
+            }
+
+            if (stage == 6) {
+                let bg = './image/b2.png';
+                let ev = './image/e4.png';
+                let des = '你終於走出了森林，進入了最近的城鎮，你因為肚子餓了走進速食店，而排在你前面的人一直猶豫不決，該給他一點建議決定今天吃什麼!';
+                
+                let choice = '';
+                choice = '<button class="choice" onclick="setStageChoice(7,1)">漢堡配薯條</button>';
+                choice += '<button class="choice" onclick="setStageChoice(7,2)">炸雞配可樂</button>';
+                choice += '<button class="choice" onclick="setStageChoice(7,3)">沙拉配綠茶</button>';
+                choice += '<button class="choice" onclick="setStageChoice(7,4)">兔田配可拉</button>';
+                backgroundImage.style.backgroundImage = 'url("' + bg + '")';
+                eventDiv.innerHTML = '<img id="eventImage" class="event" src="' + ev + '">';
+                descriptionDiv.innerHTML = '<p id="descriptionText" class="descriptionText">' + des + '</p>';
+                choiceDiv.innerHTML = choice;
+            }
+
+            if (stage == 7) {
+                let bg = './image/b2.png';
+                let ev = '';
+                let des = '';
+                if (previousChoice == 1) {
+                    des = '前面的顧客:「漢堡配薯條真是非常經典的搭配，我因為有選擇障礙常常花很多時間點餐，為了感謝你就讓我請你吃一頓午餐吧!」<br />你吃到了免費的漢堡配薯條!!!';
+                    ev = './image/e5.png';
+                    localStorage.setItem("full", 1);
+                }
+                if (previousChoice == 2) {
+                    des = '前面的顧客:「一口炸雞，一口可樂，讚!我因為有選擇障礙常常花很多時間點餐，為了感謝你就讓我請你吃一頓午餐吧!」<br />你吃到了免費的炸雞配可樂!!!';
+                    ev = './image/e6.png';
+                    localStorage.setItem("full", 1);
+                }
+                if (previousChoice == 3) {
+                    des = '前面的顧客:「你剛剛說什麼邪教東西?來速食店點沙拉配綠茶???你怎麼不滾去素食店!!!」<br />前面的顧客點了些垃圾食物後離開了，而輪到你點餐時你發現身上根本沒半毛錢，只能挨餓離開了。';
+                    ev = './image/nothing.png';
+                    localStorage.setItem("full", 0);
+                }
+                if (previousChoice == 4) {
+                    des = '前面的顧客:「那是什麼?聽起來好油喔peko!我請你吃頓午餐來聊聊吧!」<br />你接受他的好意，吃了漢堡配薯條peko茶，離開前那位顧客還送給你了一些大胡蘿蔔!!!';
+                    ev = './image/e7.png';
+                    localStorage.setItem("full", 1);
+                    localStorage.setItem("carrot", 1);
+                }
+                let choice = '';
+                choice = '<button class="choice" onclick="setStageChoice(8,1)">接著繼續前進吧!</button>';
+                backgroundImage.style.backgroundImage = 'url("' + bg + '")';
+                eventDiv.innerHTML = '<img id="eventImage" class="event" src="' + ev + '">';
+                descriptionDiv.innerHTML = '<p id="descriptionText" class="descriptionText">' + des + '</p>';
+                choiceDiv.innerHTML = choice;
+            }
+
+            if (stage == 8) {
+                let bg = './image/b3.png';
+                let ev = './image/e8.png';
+                let des = '在城鎮中你打聽到北方有一個奇怪的門，似乎可以通向其他世界，你抱著能回到故鄉的希望開始了旅程。<br />首先你來到了一個廣闊的草原，有隻兇暴的兔子出現了!';
+                
+                let choice = '<button class="choice" onclick="setStageChoice(9,1)">逃跑</button>';
+                let full = localStorage.getItem("full");
+                let carrot = localStorage.getItem("carrot");
+                if (full == 1) {
+                    choice += '<button class="choice" onclick="setStageChoice(9,2)">徒手搏鬥</button>';
+                }
+                if (carrot == 1) {
+                    choice += '<button class="choice" onclick="setStageChoice(9,3)">拿出胡蘿蔔</button>';
+                }
+
+                backgroundImage.style.backgroundImage = 'url("' + bg + '")';
+                eventDiv.innerHTML = '<img id="eventImage" class="event" src="' + ev + '">';
+                descriptionDiv.innerHTML = '<p id="descriptionText" class="descriptionText">' + des + '</p>';
+                choiceDiv.innerHTML = choice;
+            }
+
+            if (stage == 9) {
+                let bg = './image/b3.png';
+                let ev = './image/nothing.png';
+                let des = '';
+
+                if (previousChoice == 1) {
+                    des = '你嘗試逃跑，但兔子實在跑得太快了，你被追上後還被牠狠狠的咬了一口!!';
+                    localStorage.setItem("hurt",1);
+                }
+                if (previousChoice == 2) {
+                    des = '你剛剛吃飽飯有了力氣!在對付兔子時雖然有點小擦傷，但整體而言你沒甚麼大礙!';
+                    localStorage.setItem("hurt", 2);
+                }
+                if (previousChoice == 3) {
+                    des = '你拿了胡蘿蔔給牠，牠似乎很滿意的離開了。';
+                    localStorage.setItem("hurt", 3);
+                }
+                let choice = '<button class="choice" onclick="setStageChoice(10,1)">繼續前進!</button>';
+
+
+                backgroundImage.style.backgroundImage = 'url("' + bg + '")';
+                eventDiv.innerHTML = '<img id="eventImage" class="event" src="' + ev + '">';
+                descriptionDiv.innerHTML = '<p id="descriptionText" class="descriptionText">' + des + '</p>';
+                choiceDiv.innerHTML = choice;
+            }
+
+            if (stage == 10) {
+                let bg = './image/b4.png';
+                let ev = './image/e9.png';
+                let des = '你向著目標繼續向北走來到了一座高山上，此時有一隻藍色的鳥飛來，仔細一看牠的身體似乎是由冰組成的，你要怎麼做呢?';
+
+                let choice = '<button class="choice" onclick="setStageChoice(11,1)">大喊:「還敢下來阿!冰鳥!」</button>';
+                choice += '<button class="choice" onclick="setStageChoice(11,2)">什麼都不做等牠飛過來</button>';
+
+                backgroundImage.style.backgroundImage = 'url("' + bg + '")';
+                eventDiv.innerHTML = '<img id="eventImage" class="event" src="' + ev + '">';
+                descriptionDiv.innerHTML = '<p id="descriptionText" class="descriptionText">' + des + '</p>';
+                choiceDiv.innerHTML = choice;
+            }
+
+            if (stage == 11) {
+                let bg = './image/b4.png';
+                let ev = './image/nothing.png';
+                let des = '';
+                if (previousChoice == 1) {
+                    des = '冰鳥聽到後終於回想起曾經一度被「他」所支配的恐怖，還有囚禁於鳥籠中的那份屈辱。立刻掉頭向著遠方飛離。';
+                    localStorage.setItem("bird", 1);
+                }
+                if (previousChoice == 2) {
+                    des = '冰鳥飛下來後竟然說話了!<br />冰鳥:「旅人阿!在這座高山的深處有個可怕的怪物，這個護身符就交給你了!」<br />語畢冰鳥拿給你一個藍色的石頭便離去了。';
+                    localStorage.setItem("bird", 2);
+                }
+                let choice = '<button class="choice" onclick="setStageChoice(12,1)">繼續前進!</button>';
+
+                backgroundImage.style.backgroundImage = 'url("' + bg + '")';
+                eventDiv.innerHTML = '<img id="eventImage" class="event" src="' + ev + '">';
+                descriptionDiv.innerHTML = '<p id="descriptionText" class="descriptionText">' + des + '</p>';
+                choiceDiv.innerHTML = choice;
+            }
+
+            if (stage == 12) {
+                let bg = './image/b5.png';
+                let ev = './image/e10.png';
+                let des = '你來到了山上的遺跡，並前往裡面探索，在你終於找到傳聞中的門時，突然有一隻兇狠的怪物向你襲來!!!';
+                let dog = localStorage.getItem("dog");
+                let bird = localStorage.getItem("bird");
+                let choice = '<button class="choice" onclick="setStageChoice(13,1)">獨自一人應戰!</button>';
+                if (dog == 1) {
+                    choice += '<button class="choice" onclick="setStageChoice(13,2)">拿出口袋裡的寶貝球召喚阿吉!</button>';
+                }
+                if (bird == 2) {
+                    choice += '<button class="choice" onclick="setStageChoice(14,3)">使用冰鳥給你的護身符!</button>';
+                }
+
+                backgroundImage.style.backgroundImage = 'url("' + bg + '")';
+                eventDiv.innerHTML = '<img id="eventImage" class="event" src="' + ev + '">';
+                descriptionDiv.innerHTML = '<p id="descriptionText" class="descriptionText">' + des + '</p>';
+                choiceDiv.innerHTML = choice;
+            }
+
+            if (stage == 12) {
+                let bg = './image/b5.png';
+                let ev = './image/e10.png';
+                let des = '你來到了山上的遺跡，並前往裡面探索，在你終於找到傳聞中的門時，突然有一隻兇狠的怪物向你襲來!!!';
+                let dog = localStorage.getItem("dog");
+                let bird = localStorage.getItem("bird");
+                let choice = '<button class="choice" onclick="setStageChoice(13,1)">獨自一人應戰!</button>';
+                if (dog == 1) {
+                    choice += '<button class="choice" onclick="setStageChoice(13,2)">拿出口袋裡的寶貝球召喚阿吉!</button>';
+                }
+                if (bird == 2) {
+                    choice += '<button class="choice" onclick="setStageChoice(14,3)">使用冰鳥給你的護身符!</button>';
+                }
+
+                backgroundImage.style.backgroundImage = 'url("' + bg + '")';
+                eventDiv.innerHTML = '<img id="eventImage" class="event" src="' + ev + '">';
+                descriptionDiv.innerHTML = '<p id="descriptionText" class="descriptionText">' + des + '</p>';
+                choiceDiv.innerHTML = choice;
+            }
+
+            if (stage == 13) {
+                let bg = './image/b5.png';
+                let ev = './image/nothing.png';
+                let des = '';
+                let choice = '';
+                if (previousChoice == 1) {
+                    des = '你獨自應戰，但力量差距實在太大，你倒下了...<br />要是有夥伴的話...要是有幫助的話...結局會不會不同呢?';
+
+                }
+                if (previousChoice == 2) {
+                    des = '就決定是你了阿吉!你派出阿吉上場了!要阿吉做什麼呢?';
+                    choice = '<button class="choice" onclick="setStageChoice(14,1)">阿吉!使出捨身攻擊!</button>';
+                    choice += '<button class="choice" onclick="setStageChoice(14,2)">阿吉!幫我撐十秒!</button>';
+                }
+
+                backgroundImage.style.backgroundImage = 'url("' + bg + '")';
+                eventDiv.innerHTML = '<img id="eventImage" class="event" src="' + ev + '">';
+                descriptionDiv.innerHTML = '<p id="descriptionText" class="descriptionText">' + des + '</p>';
+                choiceDiv.innerHTML = choice;
+            }
+
+            if (stage == 14) {
+                let bg = './image/b5.png';
+                let ev = './image/nothing.png';
+                let des = '';
+                let choice = '';
+                if (previousChoice == 1) {
+                    des = '阿吉擺出難過的表情，使出了捨身攻擊，而你則趁機衝向傳送門...';
+                    ev = './image/e11.png';
+                    localStorage.setItem("dog", 3);
+                }
+                if (previousChoice == 2) {
+                    des = '阿吉使出全力幫你撐了十秒鐘，你靈光一閃想到了一個不能說的十秒十六連擊的招式，拿起了旁邊一黑一藍的劍，大喊「斯達巴斯頭死特林姆」砍了過去!你和阿吉成功擊敗怪物並一起走向傳送門...';
+                    ev = './image/e12.gif';
+                    localStorage.setItem("dog", 4);
+                }
+                if (previousChoice == 3) {
+                    des = '你使用了冰鳥給你的護身符，一道冰牆瞬間形成，而你則把握機會衝向傳送門。';
+                    ev = './image/e13.png';
+                    localStorage.setItem("bird", 3);
+                }
+
+
+                choice += '<button class="choice" onclick="setStageChoice(15,1)">都...結束了嗎...</button>';
+
+                backgroundImage.style.backgroundImage = 'url("' + bg + '")';
+                eventDiv.innerHTML = '<img id="eventImage" class="event" src="' + ev + '">';
+                descriptionDiv.innerHTML = '<p id="descriptionText" class="descriptionText">' + des + '</p>';
+                choiceDiv.innerHTML = choice;
+            }
+            //結局文字判定
+            if (stage == 15) {
+                let bg = './image/b6.png';
+                let ev = './image/nothing.png';
+                let des = '結局<br />眼睛睜開，出現在眼前的是陌生的白色房間，你想起了過往的記憶，你似乎是被卡車撞了...<br />';
+                let choice = '';
+                if (localStorage.getItem("dog")==1) {
+                    des += '阿吉原本是你家附近的流浪狗，後來你收養了他；';
+                }
+                if (localStorage.getItem("dog") == 2) {
+                    des += '阿吉是你家附近的流浪狗；';
+                }
+                if (localStorage.getItem("dog") == 3) {
+                    des += '阿吉原本是你家附近的流浪狗，後來你收養了他；';
+                }
+                if (localStorage.getItem("dog") == 4) {
+                    des += '阿吉原本是你家附近的流浪狗，後來你收養了他；';
+                }
+                if (localStorage.getItem("carrot") == 1) {
+                    des += '兔田pekora其實是你最喜歡的Vtuber；';
+                }
+                if (localStorage.getItem("hurt") == 1) {
+                    des += '草原上遇到的兔子是小時候曾經咬過你的殘暴兔子；';
+                }
+                if (localStorage.getItem("hurt") == 2) {
+                    des += '草原上遇到的兔子是小時候曾經被你扁過的可憐兔子；';
+                }
+                if (localStorage.getItem("hurt") == 3) {
+                    des += '草原上遇到的兔子是小時候曾經被你餵過的可愛兔子；';
+                }
+                if (localStorage.getItem("bird") == 1) {
+                    des += '你曾經聽過一位英雄聯盟的實況主說過「還敢下來阿!冰鳥!」，所以才下意識的說了一樣的話，趕跑了他。';
+                }
+                if (localStorage.getItem("bird") == 2) {
+                    des += '冰鳥其實是帶來幸福的青鳥，而你一直在等待著幸福的來臨；';
+                }
+                if (localStorage.getItem("bird") == 3) {
+                    des += '冰鳥其實是帶來幸福的青鳥，而你一直在等待著幸福的來臨，他也確實讓你逃離了危險，儘管被卡車撞了卻沒有受傷只是受到驚嚇短暫暈了過去。；';
+                }
+                if (localStorage.getItem("dog") == 3) {
+                    des += '在你即將被卡車撞上時，你收養的寵物阿吉捨身推開你，你因此沒受什麼傷但昏迷了一陣子被送到了醫院，阿吉他卻離世了，或許在夢中他那最後難過的表情是因為再也沒辦法陪伴你而難過...';
+                }
+                if (localStorage.getItem("dog") == 4) {
+                    des += '在你即將被卡車撞上時，你靈光一現用快到不行的速度改變身法和你收養的寵物阿吉一同分擔了衝擊，你們都受了一點小傷但並不嚴重，只是昏睡了一小段時間。';
+                }
+
+                backgroundImage.style.backgroundImage = 'url("' + bg + '")';
+                eventDiv.innerHTML = '<img id="eventImage" class="event" src="' + ev + '">';
+                descriptionDiv.innerHTML = '<p id="descriptionText" class="descriptionText">' + des + '</p>';
+                choiceDiv.innerHTML = choice;
+            }
+
+        };
+
+        //本地端儲存先前的關卡及選擇
+        function setStageChoice(num1,num2) {
+            localStorage.setItem('stage',num1);
+            localStorage.setItem('choice', num2);
+            checkStage();
+        }
+
+        //清除本地端暫存並重新開始
+        function restart() {
+            localStorage.clear();
+            console.log("stage=" + localStorage.getItem("stage"));
+            console.log("previousChoice=" + localStorage.getItem("choice"));
+            start();
+        }
+
+        window.addEventListener("load", start, false);
+    </script>
+</head>
+<!--網頁顯示主要分五個部分:背景、事件圖片區、描述區、選擇區、重新開始區-->
+<body id="backgroundImage">
+    <div id="eventDiv" class="event"></div>
+    <div id="descriptionDiv" class="description"></div>
+    <div id="choiceDiv" class="choicediv"></div>
+    <div id="restartDiv" class="restart">
+        <button id="restart" class="restart" onclick="restart()">重新開始</button>
+    </div>
+</body>
+</html>
